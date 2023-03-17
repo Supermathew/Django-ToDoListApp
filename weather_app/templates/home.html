@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>home page </title>
+{% endblock title %}
+{% block content %}
+<div class="container">
+   <br>
+   </br>
+   {% if messages %}
+   {% for message in messages %}
+   <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Great!</strong>{{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+   </div>
+   {% endfor %}
+   {% endif %}
+   <form method="POST">
+      {% csrf_token %}
+      <div class="form-group" class="row" >
+         <label for="exampleFormControlTextarea1">Enter the Task You need to complete</label>
+         <textarea class="form-control" id="exampleFormControlTextarea1" rows="1" name='task' placeholder="Enter Task"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary  mt-3">Submit</button>
+   </form>
+   <br>
+   </br>
+   <table class="table table-bordered border-dark">
+      <thead class="table-dark">
+         <tr>
+            <th scope="col">Task</th>
+            <th scope="col">Done </th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+         </tr>
+      </thead>
+      <tbody>
+         {% for obj in alltask %}
+         {%if obj.done%}
+          <tr class="table-success">
+            <td scope="row"><del>{{obj.task}}</del></td>
+            <td><a class="btn btn-primary" href="{% url 'tasktrue' obj.id %}" role="button">Mark Task Not complete</a></td>
+            <td>
+               <!-- Button trigger modal -->
+               <button type="button" href="{% url 'taskupdate' obj.id %}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{obj.id}}">
+               Edit Task
+               </button>
+               <!-- Modal -->
+               <div class="modal fade" id="exampleModal{{ obj.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Task</h1>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <form action="{% url 'taskupdate' obj.id %}" method="POST">
+                              {% csrf_token %}
+                              <div class="form-group" >
+                                 <label for="exampleFormControlTextarea1">Enter the Task You need to complete</label>
+                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="1" name='task' placeholder="Enter Task"></textarea>
+                                 <input type="hidden" name="done" value="{{ task_obj.done }}">
+                              </div>
+                              <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </td>
+            <td><a class="btn btn-primary" href="{% url 'deletetask' obj.id %}" role="button">Delete Task</a></td>
+          </tr>
+         {% else %}
+          <tr>
+            <td scope="row">{{obj.task}}</td>
+            <td><a class="btn btn-primary" href="{% url 'taskfalse' obj.id %}" role="button">Mark Task completed</a></td>
+            <td>
+               <!-- Button trigger modal -->
+               <a role="button"  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{obj.id}}">
+                Edit Task
+               </a>
+               <!-- Modal -->
+               <div class="modal fade" id="exampleModal{{obj.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Task</h1>
+                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           <form action="{% url 'taskupdate' obj.id %}" method="POST">
+                              {% csrf_token %}
+                              <div class="form-group" >
+                                 <label for="exampleFormControlTextarea1">Edit the Task You need to complete</label>
+                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="1" name='task' placeholder="Edit Task"></textarea>
+                                 <input type="hidden" name="done" value="{{ task_obj.done }}">
+                              </div>
+                              <br>
+                              </br>
+                              <button type="submit" class="btn btn-primary">Submit</button>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </td>
+            <td><a class="btn btn-primary" href="{% url 'deletetask' obj.id %}" role="button">Delete Task</a></td>
+          </tr>
+         {% endif %}
+         {% endfor %}
+      </tbody>
+   </table>
+   <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item"><a class="page-link" href="?pg=1" aria-label="previous"><span aria-hidden="true">&laquo;</span></a></li>
+        {% if alltask.has_previous %}
+            <li class="page-item"><a class="page-link" href="?pg={{ alltask.previous_page_number }}">{{ alltask.previous_page_number }}</a></li>
+        {% endif %}
+        <li class="page-item"><a class="page-link" href="?pg={{alltask.number}}">{{ alltask.number }}</a></li>
+        {% if alltask.has_next %}
+           <li class="page-item"><a class="page-link" href="?pg={{ alltask.next_page_number }}">{{ alltask.next_page_number }}</a></li>
+        {% endif %}
+        <li class="page-item"><a class="page-link" href="?pg={{ alltask.paginator.num_pages }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+      </ul>
+    </nav>
+</div>
+{% endblock content %}

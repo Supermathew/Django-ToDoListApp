@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block title %}
+    <title>Welcome To Team Rocket!</title>
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-lg-4">
+                <img src="{% static 'photo/stickynotes.jpg' %}" alt="Notes" class="rounded-lg shadow-sm" width="360" height="250">
+            </div>
+            <div class="col-lg-4">
+                <img src="{% static 'photo/stickynotes-1.jpg' %}" alt="Notes" class="rounded-lg shadow-sm" width="360" height="250">
+            </div>
+            <div class="col-lg-4">
+                <img src="{% static 'photo/stickynotes-2.jpg' %}" alt="Notes" class="rounded-lg shadow-sm" width="360" height="250">
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-10 offset-md-1">
+                <center><p class="h1 text-primary">Quick And Easy To Use, Anytime, Anywhere!</p></center>
+                <center><p class="h2 mt-3">"We Help You Build a good online presence For Your NGO Website"</p></center>
+                <center><p class="h5">Team Rocket-A easy way to build a website</p></center>
+                <center><a href="{% url 'todolist' %}"><button type="button" class="btn btn-primary btn-lg mt-2 shadow">Let's Get Started</button></a></center>
+                <center><p class="h5 mt-2">Just Do It.</p></center>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}

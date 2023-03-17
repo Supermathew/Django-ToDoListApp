@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>contact us page </title>
+<style>
+   h1{text-align: center;}
+   h5{text-align:center;}
+</style>
+{% endblock title %}
+{% block content %}
+<div class="container">
+   </br>
+   <h2>Contact Taskmate</h2>
+   {% if messages %}
+   {% for message in messages %}
+
+   {% if message.tags == 'success' %}
+   <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Great!</strong>{{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+   </div>
+   {% else  %}
+   <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>oops!</strong>{{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+   </div>
+   {% endif %}
+   {% endfor %}
+   {% endif %}
+   <form method="POST" >
+      {% csrf_token %}
+      <div class="container mt-5">
+         <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">@</span>
+            <input type="text" class="form-control" name='username' placeholder="Username" aria-label="username" aria-describedby="basic-addon1">
+         </div>
+         <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2">Email-Id</span>
+            <input type="text" class="form-control" name='email' placeholder="please Enter Your Email ID " aria-label="email" aria-describedby="basic-addon2">
+            
+         </div>
+         <div class="input-group">
+            <span class="input-group-text">Please Enter Your Query</span>
+            <textarea class="form-control" name='message' aria-label="With textarea"></textarea>
+         </div>
+         <button type="submit" class="btn btn-primary  mt-3">Submit</button>
+      </div>
+   </form>
+   <br>
+   </br>
+   <h5> We Will Contact You Soon!!</h5>
+</div>
+{% endblock content %}
